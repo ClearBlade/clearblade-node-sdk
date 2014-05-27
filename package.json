@@ -1,0 +1,15 @@
+{
+  "name": "clearblade-node",
+  "description": "ClearBlade SDK for Node.js.",
+  "version": "1.2.0",
+  "author": {
+    "name": "Alex Seubert",
+    "email": "aseubert@clearblade.com"
+  },
+  "dependencies": {
+    "lodash": "^2.4.1",
+    "mqtt": "^0.3.8",
+    "request": "~2.34.0"
+  },
+  "main": "ClearBlade.js"
+}
