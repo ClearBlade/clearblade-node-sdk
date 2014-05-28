@@ -34,6 +34,12 @@ describe('A ClearBlade Query object', function() {
     done();
   });
 
+  it('should correctly add greaterThanEqualTo options', function(done) {
+    query.greaterThanEqualTo('shirt', 'yellow');
+    expect(query.query.FILTERS[0][1].GTE).toContain({shirt: 'yellow'});
+    done();
+  });
+
   it('should create a proper request for fetching', function(done) {
     query.fetch(function() { });
 
