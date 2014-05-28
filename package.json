@@ -2,6 +2,10 @@
   "name": "clearblade",
   "description": "ClearBlade SDK for Node.js.",
   "version": "1.2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ClearBlade/Node-SDK.git"
+  },
   "author": {
     "name": "Alex Seubert",
     "email": "aseubert@clearblade.com"
@@ -11,5 +15,11 @@
     "mqtt": "^0.3.8",
     "request": "~2.34.0"
   },
-  "main": "ClearBlade.js"
+  "devDependencies": {
+    "jasmine-node": "^2.0.0"
+  },
+  "main": "ClearBlade.js",
+  "scripts": {
+    "test": "jasmine-node spec"
+  }
 }
