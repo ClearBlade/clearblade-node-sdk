@@ -1,6 +1,9 @@
 var requestLib = require('request'),
     _ = require('lodash'),
-    mqtt = require('mqtt');
+    mqtt = require('mqtt'),
+    winston = require('winston');
+
+winston.add(winston.transports.File, { filename: 'cblog.log' });
 
 (function(root) {
   root.ClearBlade = root.ClearBlade || {};
@@ -24,7 +27,7 @@ var requestLib = require('request'),
     var requestOptions = {headers: {}};
     var self = this;
     requestOptions.method = options.method || 'GET';
-    requestOptions.url = options.URI || self.URI;
+    requestOptions.url = options.URI || ClearBlade.URI;
     requestOptions.body = options.body || {};
     var qs = options.qs || '';
     var useUser = options.useUser || true;
@@ -143,36 +146,36 @@ var requestLib = require('request'),
     if (options.useUser && (options.email || options.password || options.registerUser))
       throw new Error('Cannot authenticate or register a new user when useUser is set');
 
-    this.systemKey = options.systemKey;
-    this.systemSecret = options.systemSecret;
-    this.URI = options.URI || "https://rtp.clearblade.com";
-    this.messagingURI = options.messagingURI || "messaging.clearblade.com";
-    this.messagingPort = options.messagingPort || 1883;
-    this.logging = options.logging || false;
+    ClearBlade.systemKey = options.systemKey;
+    ClearBlade.systemSecret = options.systemSecret;
+    ClearBlade.URI = options.URI || "https://rtp.clearblade.com";
+    ClearBlade.messagingURI = options.messagingURI || "messaging.clearblade.com";
+    ClearBlade.messagingPort = options.messagingPort || 1883;
+    ClearBlade.logging = options.logging || false;
 
-    this.defaultQoS = options.defaultQoS || 0;
-    this._callTimeout =  options.callTimeout || 30000; //default to 30 seconds
+    ClearBlade.defaultQoS = options.defaultQoS || 0;
+    ClearBlade._callTimeout =  options.callTimeout || 30000; //default to 30 seconds
 
-    this.user = null;
+    ClearBlade.user = null;
 
     if (options.useUser) {
-      this.user = options.useUser;
+      ClearBlade.user = options.useUser;
     } else if (options.registerUser) {
-      this.registerUser(options.email, options.password, function(err, response) {
+      ClearBlade.registerUser(options.email, options.password, function(err, response) {
         if (err) {
           ClearBlade.execute(err, response, options.callback);
         } else {
-          this.loginUser(options.email, options.password, function(err, user) {
+          ClearBlade.loginUser(options.email, options.password, function(err, user) {
             ClearBlade.execute(err, user, options.callback);
           });
         }
       });
     } else if (options.email) {
-      this.loginUser(options.email, options.password, function(err, user) {
+      ClearBlade.loginUser(options.email, options.password, function(err, user) {
         ClearBlade.execute(err, user, options.callback);
       });
     } else {
-      this.loginAnon(function(err, user) {
+      ClearBlade.loginAnon(function(err, user) {
         ClearBlade.execute(err, user, options.callback);
       });
     }
@@ -234,8 +237,14 @@ var requestLib = require('request'),
       if (err) {
         ClearBlade.execute(true, response, callback);
       } else {
-        ClearBlade.setUser(email, response.user_token);
-        ClearBlade.execute(false, ClearBlade.user, callback);
+        var parsedResponse;
+        try {
+          parsedResponse = JSON.parse(response);
+          ClearBlade.setUser(email, parsedResponse.user_token);
+          ClearBlade.execute(false, ClearBlade.user, callback);
+        } catch(e) {
+          ClearBlade.execute(true, e, callback);
+        }
       }
     });
   };
