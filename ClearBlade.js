@@ -748,6 +748,7 @@ winston.add(winston.transports.File, { filename: 'cblog.log' });
 
     var colID = this.collection;
     var callCallback = function (err, data) {
+      data = JSON.parse(data);
       if (err) {
         callback(err, data);
       } else {
