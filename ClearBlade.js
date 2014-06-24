@@ -65,6 +65,17 @@ winston.add(winston.transports.File, { filename: 'cblog.log' });
 
     requestLib(requestOptions, function(error, response, body) {
       callback(error, body);
+      if (!error && response.statusCode == 200) {
+        try {
+          body = JSON.parse(body);
+        } catch (e) {
+          callback(e, body);
+          return;
+        }
+        callback(error, body);
+      } else {
+        callback(true, body);
+      }
     });
 
   };
@@ -148,7 +159,7 @@ winston.add(winston.transports.File, { filename: 'cblog.log' });
 
     ClearBlade.systemKey = options.systemKey;
     ClearBlade.systemSecret = options.systemSecret;
-    ClearBlade.URI = options.URI || "https://rtp.clearblade.com";
+    ClearBlade.URI = options.URI || "https://platform.clearblade.com";
     ClearBlade.messagingURI = options.messagingURI || "messaging.clearblade.com";
     ClearBlade.messagingPort = options.messagingPort || 1883;
     ClearBlade.logging = options.logging || false;
@@ -190,7 +201,6 @@ winston.add(winston.transports.File, { filename: 'cblog.log' });
       if (err) {
         ClearBlade.execute(true, response, callback);
       } else {
-        response = JSON.parse(response);
         ClearBlade.setUser(null, response.user_token);
         ClearBlade.execute(false, ClearBlade.user, callback);
       }
@@ -237,10 +247,8 @@ winston.add(winston.transports.File, { filename: 'cblog.log' });
       if (err) {
         ClearBlade.execute(true, response, callback);
       } else {
-        var parsedResponse;
         try {
-          parsedResponse = JSON.parse(response);
-          ClearBlade.setUser(email, parsedResponse.user_token);
+          ClearBlade.setUser(email, response.user_token);
           ClearBlade.execute(false, ClearBlade.user, callback);
         } catch(e) {
           ClearBlade.execute(true, e, callback);
@@ -748,7 +756,6 @@ winston.add(winston.transports.File, { filename: 'cblog.log' });
 
     var colID = this.collection;
     var callCallback = function (err, data) {
-      data = JSON.parse(data);
       if (err) {
         callback(err, data);
       } else {
@@ -805,7 +812,7 @@ winston.add(winston.transports.File, { filename: 'cblog.log' });
       } else {
         var itemArray = [];
         for (var i in data) {
-          var newItem = new cb.Item(data[i], colID);
+          var newItem = new ClearBlade.Item(data[i], colID);
           itemArray.push(newItem);
         }
         callback(err, itemArray);
