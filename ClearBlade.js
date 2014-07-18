@@ -636,10 +636,18 @@ winston.add(winston.transports.File, { filename: 'cblog.log' });
     * //will match if an item has an attribute 'name' that is equal to 'John' or 'Jim'
     */
   ClearBlade.Query.prototype.or = function (that) {
-    for (var i = 0; i < that.query.FILTERS.length; i++) {
-      this.query.FILTERS.push(that.query.FILTERS[i]);
+    if (this.query.hasOwnProperty('FILTERS') && that.query.hasOwnProperty('FILTERS')) {
+      for (var i = 0; i < that.query.FILTERS.length; i++) {
+        this.query.FILTERS.push(that.query.FILTERS[i]);
+      }
+      return this;
+    } else if (!this.query.hasOwnProperty('FILTERS') && that.query.hasOwnProperty('FILTERS')) {
+      for (var j = 0; j < that.query.FILTERS.length; j++) {
+        this.query.FILTERS = [];
+        this.query.FILTERS.push(that.query.FILTERS[j]);
+      }
+      return this;
     }
-    return this;
   };
 
   /**
