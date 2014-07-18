@@ -895,6 +895,57 @@ winston.add(winston.transports.File, { filename: 'cblog.log' });
     delete this;
   };
 
+  ClearBlade.User = function(){};
+  ClearBlade.User.prototype.getUser = function(callback){
+    var reqOptions = {
+      method: 'GET',
+      endpoint: 'api/v/1/user/info'
+    };
+    if (typeof callback === 'function') {
+      ClearBlade.request(reqOptions, callCallback);
+    } else {
+      logger("No callback was defined!");
+    }
+  };
+  
+  ClearBlade.User.prototype.setUser = function(data, callback){
+    var reqOptions = {
+      method: 'PUT',
+      endpoint: 'api/v/1/user/info',
+      body: data
+    };
+    if (typeof callback === 'function') {
+      _request(reqOptions, callback);
+      ClearBlade.request(reqOptions, callCallback);
+    } else {
+      logger("No callback was defined!");
+    }
+  };
+
+  ClearBlade.User.prototype.allUsers = function(_query, callback) {
+    var query;
+    if (callback === undefined) {
+      callback = _query;
+      query = 'query=' + _parseQuery({FILTERS:[]});
+    } else {
+      query = 'query=' + _parseQuery(_query.query);
+    }
+
+    var reqOptions = {
+      method: 'GET',
+      endpoint: 'api/v/1/user',
+      qs: query
+    };
+    var callCallback = function(err, data) {
+      callback(err, data);
+    };
+    if (typeof callback === 'function') {
+      ClearBlade.request(reqOptions, callCallback);
+    } else {
+      logger('No callback was defined!');
+    }
+  };
+
 }(this));
 
 (function(root) {
