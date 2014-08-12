@@ -64,7 +64,7 @@ winston.add(winston.transports.File, { filename: 'cblog.log' });
     requestOptions.body = JSON.stringify(requestOptions.body);
 
     requestLib(requestOptions, function(error, response, body) {
-      if (!error && response.statusCode == 200) {
+      if (!error && response.statusCode == 200 && body) {
         try {
           body = JSON.parse(body);
         } catch (e) {
@@ -72,6 +72,8 @@ winston.add(winston.transports.File, { filename: 'cblog.log' });
           return;
         }
         callback(error, body);
+      } else if (error || response.statusCode != 200) {
+        callback(true, body);
       } else {
         callback(true, body);
       }
@@ -363,7 +365,6 @@ winston.add(winston.transports.File, { filename: 'cblog.log' });
     *
     */
   ClearBlade.Collection.prototype.create = function (newItem, callback) {
-    console.log("CREATING");
     var reqOptions = {
       method: 'POST',
       endpoint: 'api/v/1/data/' + this.ID,
