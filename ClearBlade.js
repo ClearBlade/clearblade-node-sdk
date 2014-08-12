@@ -64,7 +64,6 @@ winston.add(winston.transports.File, { filename: 'cblog.log' });
     requestOptions.body = JSON.stringify(requestOptions.body);
 
     requestLib(requestOptions, function(error, response, body) {
-      callback(error, body);
       if (!error && response.statusCode == 200) {
         try {
           body = JSON.parse(body);
@@ -904,7 +903,7 @@ winston.add(winston.transports.File, { filename: 'cblog.log' });
   };
 
   ClearBlade.User = function(){};
-  ClearBlade.User.prototype.getUser = function(callback){
+  ClearBlade.User.getUser = function(callback){
     var reqOptions = {
       method: 'GET',
       endpoint: 'api/v/1/user/info'
@@ -916,27 +915,26 @@ winston.add(winston.transports.File, { filename: 'cblog.log' });
     }
   };
   
-  ClearBlade.User.prototype.setUser = function(data, callback){
+  ClearBlade.User.setUser = function(data, callback){
     var reqOptions = {
       method: 'PUT',
       endpoint: 'api/v/1/user/info',
       body: data
     };
     if (typeof callback === 'function') {
-      _request(reqOptions, callback);
       ClearBlade.request(reqOptions, callCallback);
     } else {
       logger("No callback was defined!");
     }
   };
 
-  ClearBlade.User.prototype.allUsers = function(_query, callback) {
+  ClearBlade.User.allUsers = function(_query, callback) {
     var query;
     if (callback === undefined) {
       callback = _query;
-      query = 'query=' + _parseQuery({FILTERS:[]});
+      query = '';
     } else {
-      query = 'query=' + _parseQuery(_query.query);
+      query = 'query=' + ClearBlade.parseQuery(_query.query);
     }
 
     var reqOptions = {
