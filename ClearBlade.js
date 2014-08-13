@@ -987,8 +987,8 @@ winston.add(winston.transports.File, { filename: 'cblog.log' });
     var that = this;
     //roll through the config
     var conf = {};
-    conf.userName = ClearBlade.systemKey;
-    conf.password = ClearBlade.systemSecret;
+    conf.userName = ClearBlade.user.authToken;
+    conf.password = ClearBlade.systemKey;
     conf.hosts = options.hosts || [ClearBlade.messagingURI];
     conf.ports = options.ports || [ClearBlade.messagingPort];
     if (options.qos !== undefined && options.qos !== null) {
