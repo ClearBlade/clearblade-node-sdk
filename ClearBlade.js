@@ -1020,6 +1020,29 @@ winston.add(winston.transports.File, { filename: 'cblog.log' });
   };
 
   /**
+   * Gets the message history from a ClearBlade Messaging topic.
+   * @method ClearBlade.Messaging.getMessageHistory
+   * @param {string} topic The topic from which to retrieve history
+   * @param {number} startTime The time from which the history retrieval begins
+   * @param {number} count The number of messages to retrieve
+   * @param {function} callback The function to be called upon execution of query -- called with a boolean error and the response
+   */
+  ClearBlade.Messaging.getMessageHistory = function(topic, startTime, count, callback) {
+    var reqOptions = {
+      method: 'GET',
+      endpoint: 'api/v/1/message/' + ClearBlade.systemKey,
+      qs: 'topic=' + topic + '&count=' + count + '&last=' + startTime
+    };
+    ClearBlade.request(reqOptions, function(err, response) {
+      if (err) {
+        ClearBlade.execute(true, response, callback);
+      } else {
+        ClearBlade.execute(false, response, callback);
+      }
+    });
+  };
+
+  /**
    * Publishes to a topic.
    * @method ClearBlade.Messaging.prototype.publish
    * @param {string} topic Is the topic path of the message to be published. This will be sent to all listeners on the topic. No default.
