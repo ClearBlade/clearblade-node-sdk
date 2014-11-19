@@ -127,7 +127,7 @@ ClearBlade.prototype.init = function(options) {
   //check for undefined/null then check if they are the correct types for required params
   if (!options || typeof options !== 'object')
     throw new Error('Options must be an object or it is undefined');
-
+n
   if (!options.systemKey || typeof options.systemKey !== 'string')
     throw new Error('systemKey must be defined/a string');
 
@@ -701,6 +701,22 @@ ClearBlade.prototype.Query = function (options) {
     return this;
   };
 
+
+  /**
+   * Creates an regular expression clause in the query object
+   * @method ClearBlade.Query.matches
+   * @param {String} field String defining what attribute to compare
+   * @param {String} pattern String that is used to compare against
+   * @example <caption>Adding an regular expression clause to a query</caption>
+   * var query = new ClearBlade.Query();
+   * query.matches('name', 'Smith$');
+   * //will only match if an item has an attribute 'name' that ends in 'Smith'
+   */
+  query.matches = function (field, pattern) {
+    _this.addFilterToQuery(this, "RE", field, pattern);
+    return this;
+  };
+  
   /**
    * Set the pagination options for a Query.
    * @method ClearBlade.Query.setPage
