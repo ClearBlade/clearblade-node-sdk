@@ -127,7 +127,7 @@ ClearBlade.prototype.init = function(options) {
   //check for undefined/null then check if they are the correct types for required params
   if (!options || typeof options !== 'object')
     throw new Error('Options must be an object or it is undefined');
-n
+
   if (!options.systemKey || typeof options.systemKey !== 'string')
     throw new Error('systemKey must be defined/a string');
 
