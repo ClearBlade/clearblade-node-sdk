@@ -4,7 +4,7 @@ describe('A ClearBlade User request', function() {
   it('should make a valid request with a valid query using allUsers', function(done) {
     // TODO: This should be a ClearBlade.parseQuery test more than an allUsers test but
     // the bug was reported here so I'm doing it here for now.
-    var userQuery = ClearBlade.Query({collection: 'fake'});
+    var userQuery = ClearBlade.Query();
     var user = ClearBlade.User();
     var expectedRequest = {
       method: 'GET',
