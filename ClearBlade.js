@@ -1152,73 +1152,56 @@ ClearBlade.prototype.Messaging = function(options, callback){
   return messaging;
 };
 
-/**
- * ClearBlade.prototype.Push returns a Push object that allows push notifications to be sent to ClearBlade users.
- * @class ClearBlade.Push
- * @example <caption>Creation of push object</caption>
- * var clearbladePush = ClearBlade.Push();
- * clearbladePush.sendPush(['userid1', 'userid2'], {alert: "You got a push notification!"}, "theAppId", function(err, body) {
- *   console.log("Push error: " + err + " Push API response: " + body);
- * });
- */
-ClearBlade.prototype.Push = function() {
-  var _this = this;
-  var push = {};
 
-  push.user = this.user;
-  push.URI = this.URI;
-  push.systemKey = this.systemKey;
-  push.systemSecret = this.systemSecret;
 
-  function convertObjectIntoAPSFormat(sourceObject) {
-    var formattedObject = {};
-    Object.getOwnPropertyNames(sourceObject).forEach(function(element, key) {
-      if (key === "alert" || key === "badge" || key === "sound") {
-	if (!formattedObject.hasOwnProperty('aps')) {
-	  formattedObject.aps = {};
-	}
-        formattedObject.aps[key] = sourceObject[key];
-      } else {
-        formattedObject[key] = sourceObject[key];
-      }
-    });
-    return formattedObject;
+  /**
+   * Sends a push notification
+   * @method ClearBlade.sendPush
+   * @param {Array} users The list of users to which the message will be sent
+   * @param {Object} payload An object with the keys 'alert', 'badge', 'sound'
+   * @param {string} appId A string with appId that identifies the app to send to
+   * @param {function} callback A function like `function (err, data) {}` to handle the response
+   */
+
+ClearBlade.prototype.sendPush = function (users, payload, appId, callback) {
+  if (!callback || typeof callback !== 'function') {
+    throw new Error('Callback must be a function');
   }
-
-  push.sendPush = function(users, payload, appId, callback) {
-    if (!callback || typeof callback !== 'function') {
-      throw new Error('Callback must be a function');
-    }
-    if (!Array.isArray(users)) {
-      throw new Error('User list must be an array of user IDs');
-    }
-    var requestPayload = {
-      cbids: users,
-      "apple-message": convertObjectIntoAPSFormat(payload),
-      appid: appId
-    };
-    var reqOptions = {
-      method: 'POST',
-      endpoint: 'api/v/1/push/' + this.systemKey,
-      URI: this.URI,
-      systemKey: this.systemKey,
-      systemSecret: this.systemSecret,
-      user: this.user
-    };
-    _this.request(reqOptions, function(err, body, response) {
-      if (err) {
-        _this.execute(true, body, callback);
-      } else {
-        if (response.statusCode === 202 && Array.isArray(body) && body.length === 0) {
-          _this.execute(false, body, callback);
-        } else {
-          _this.execute(true, body, callback);
-        }
+  if (!Array.isArray(users)) {
+    throw new Error('User list must be an array of user IDs');
+  }
+  var _this = this;
+  var formattedObject = {};
+  Object.getOwnPropertyNames(payload).forEach(function(key, element) {
+    if (key === "alert" || key === "badge" || key === "sound") {
+      if (!formattedObject.hasOwnProperty('aps')) {
+	formattedObject.aps = {};
       }
-    });
+      formattedObject.aps[key] = payload[key];
+    }
+  });
+  var body = {
+    cbids: users,
+    "apple-message": formattedObject,
+    appid: appId
   };
-
-  return push;
+  var reqOptions = {
+    method: 'POST',
+    endpoint: 'api/v/1/push/' + this.systemKey,
+    body: body,
+    user: this.user
+  };
+  this.request(reqOptions, function(err, body, response) {
+    if (err) {
+      _this.execute(true, body, callback);
+    } else {
+      if (response.statusCode === 202 && Array.isArray(body) && body.length === 0) {
+        _this.execute(false, body, callback);
+      } else {
+        _this.execute(true, body, callback);
+      }
+    }
+  });
 };
 
 module.exports = new ClearBlade();

@@ -1,6 +1,16 @@
 var ClearBlade = require('../ClearBlade');
 
 describe('A ClearBlade User request', function() {
+  beforeEach(function () {
+    spyOn(ClearBlade, 'request').and.callFake(function(options, callback) {
+      callback(null, {user_token: 'fake'});
+    });
+    var initOptions =  {
+      systemKey: "fakeSystemKey",
+      systemSecret: "fakeSystemSecret"
+    };
+    ClearBlade.init(initOptions);
+  });
   it('should make a valid request with a valid query using allUsers', function(done) {
     // TODO: This should be a ClearBlade.parseQuery test more than an allUsers test but
     // the bug was reported here so I'm doing it here for now.
