@@ -102,10 +102,10 @@ ClearBlade.prototype.isObjectEmpty = function (object) {
 };
 
 ClearBlade.prototype.validateEmailPassword = function(email, password) {
-  if (email == null || email == undefined || typeof email != 'string') {
+  if (email == null || email == undefined || email == "" || typeof email != 'string') {
     throw new Error("Email must be given and must be a string");
   }
-  if (password == null || password == undefined || typeof password != 'string') {
+  if (password == null || password == undefined || password == "" || typeof password != 'string') {
     throw new Error("Password must be given and must be a string");
   }
 };
