@@ -75,7 +75,7 @@ ClearBlade.prototype.request = function(options, callback) {
       try {
         body = JSON.parse(body);
       } catch (e) {
-        callback(e, body, response);
+        callback(true, {parseError: e, body: body}, response);
       }
       callback(error, body, response);
     } else if (!error && response.statusCode === 200) {
