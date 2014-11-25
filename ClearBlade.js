@@ -95,7 +95,8 @@ ClearBlade.prototype.isObjectEmpty = function (object) {
     return true;
   }
   for (var keys in object) {
-    return false;
+    if(object.hasOwnProperty(keys))
+      return false;
   }
   return true;
 };
