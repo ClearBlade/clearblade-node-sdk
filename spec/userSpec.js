@@ -1,19 +1,5 @@
 var ClearBlade = require('../ClearBlade');
 
-// beforeEach(function(done) {
-//   // Make a spy that returns some fake shit when it gets the anon request here
-//   spyOn(ClearBlade, 'request').and.callFake(function(options, callback) {
-//     callback(null, {user_token: 'fake'});
-//   });
-//   var doneCallback = function() { done(); };
-//   var initOptions = {
-//     callback: doneCallback,
-//     systemKey: 'fakeSystemKey',
-//     systemSecret: 'fakeSystemSecret'
-//   };
-//   ClearBlade.init(initOptions);
-// });
-
 describe('A ClearBlade User request', function() {
   it('should make a valid request with a valid query using allUsers', function(done) {
     // TODO: This should be a ClearBlade.parseQuery test more than an allUsers test but
