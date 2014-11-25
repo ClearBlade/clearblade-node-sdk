@@ -1174,7 +1174,7 @@ ClearBlade.prototype.Push = function() {
     var formattedObject = {};
     Object.getOwnPropertyNames(sourceObject).forEach(function(element, key) {
       if (key === "alert" || key === "badge" || key === "sound") {
-	if !formattedObject.hasOwnProperty('aps') {
+	if (!formattedObject.hasOwnProperty('aps')) {
 	  formattedObject.aps = {};
 	}
         formattedObject.aps[key] = sourceObject[key];
