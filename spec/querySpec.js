@@ -1,18 +1,18 @@
 var ClearBlade = require('../ClearBlade');
 
 describe('A ClearBlade Query object', function() {
-  // beforeEach(function(done) {
-  //   spyOn(ClearBlade, 'request').and.callFake(function(options, callback) {
-  //     callback(null, {user_token: 'fake'});
-  //   });
-  //   var doneCallback = function() { done(); };
-  //   var initOptions = {
-  //     callback: doneCallback,
-  //     systemKey: 'fakeSystemKey',
-  //     systemSecret: 'fakeSystemSecret'
-  //   };
-  //   ClearBlade.init(initOptions);
-  // });
+  beforeEach(function (done) {
+    spyOn(ClearBlade, 'request').and.callFake(function(options, callback) {
+      callback(null, {user_token: 'fake'});
+    });
+    var doneCallback = function() { done(); };
+    var initOptions =  {
+      callback: doneCallback,
+      systemKey: "fakeSystemKey",
+      systemSecret: "fakeSystemSecret"
+    };
+    ClearBlade.init(initOptions);
+  });
 
   it('should correctly add ascending options', function(done) {
     var query = ClearBlade.Query({collectionID: 'fake'});

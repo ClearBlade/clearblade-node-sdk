@@ -1,24 +1,19 @@
 var ClearBlade = require('../ClearBlade');
 var util = require('util');
 
-beforeEach(function(done) {
-  spyOn(ClearBlade, 'request').and.callFake(function(options, callback) {
-    callback(null, {user_token: 'fake'});
-  });
-  var doneCallback = function() { done(); };
-  var initOptions =  {
-    callback: doneCallback,
-    systemKey: "fakeSystemKey",
-    systemSecret: "fakeSystemSecret"
-  };
-  ClearBlade.init(initOptions);
-});
-
-
 describe('A ClearBlade Collection object', function() {
-  var collection = null;
+  var collection;
 
   beforeEach(function() {
+    spyOn(ClearBlade, 'request').and.callFake(function(options, callback) {
+      callback(null, {user_token: 'fake'});
+    });
+    var initOptions =  {
+      systemKey: "fakeSystemKey",
+      systemSecret: "fakeSystemSecret"
+    };
+    ClearBlade.init(initOptions);
+    
     collection = ClearBlade.Collection("fakecollectionID");
 
     // Just stub the request that will do the fetch
