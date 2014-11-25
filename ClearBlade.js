@@ -1152,6 +1152,17 @@ ClearBlade.prototype.Messaging = function(options, callback){
   return messaging;
 };
 
+
+
+  /**
+   * Sends a push notification
+   * @method ClearBlade.sendPush
+   * @param {Array} users The list of users to which the message will be sent
+   * @param {Object} payload An object with the keys 'alert', 'badge', 'sound'
+   * @param {string} appId A string with appId that identifies the app to send to
+   * @param {function} callback A function like `function (err, data) {}` to handle the response
+   */
+
 ClearBlade.prototype.sendPush = function (users, payload, appId, callback) {
   if (!callback || typeof callback !== 'function') {
     throw new Error('Callback must be a function');
