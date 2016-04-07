@@ -2,7 +2,7 @@ var ClearBlade = require('../ClearBlade');
 
 describe('A ClearBlade User request', function() {
   beforeEach(function () {
-    spyOn(ClearBlade, 'request').and.callFake(function(options, callback) {
+    spyOn(ClearBlade, 'request').andCallFake(function(options, callback) {
       callback(null, {user_token: 'fake'});
     });
     var initOptions =  {
@@ -22,20 +22,20 @@ describe('A ClearBlade User request', function() {
       URI: 'https://platform.clearblade.com',
       qs: 'query=%7B%22FILTERS%22%3A%5B%5B%7B%22EQ%22%3A%5B%7B%22pants%22%3A%22green%22%7D%5D%7D%5D%5D%7D',
       user: {
-	email : null,
-	authToken : 'fake'
+  email : null,
+  authToken : 'fake'
       }
     };
     userQuery.equalTo('pants', 'green');
     user.allUsers(userQuery, function() {
       // check the request, don't care about the results because this is a unit test
-      expect(ClearBlade.request.calls.argsFor(1)[0]).toEqual(expectedRequest);
+      expect(ClearBlade.request.mostRecentCall.args[0]).toEqual(expectedRequest);
       done();
     });
   });
 
   it('should make a valid request with no query using allUsers', function(done) {
-    ClearBlade.request.and.callFake(function(options, callback) {
+    ClearBlade.request.andCallFake(function(options, callback) {
       callback(null, [{user: 'fake'}]);
     });
     var user = ClearBlade.User();
@@ -45,12 +45,12 @@ describe('A ClearBlade User request', function() {
       URI: 'https://platform.clearblade.com',
       qs: '',
       user: {
-	email : null,
-	authToken : 'fake'
+  email : null,
+  authToken : 'fake'
       }
     };
     user.allUsers(function() {
-      expect(ClearBlade.request.calls.argsFor(1)[0]).toEqual(expectedRequest);
+      expect(ClearBlade.request.mostRecentCall.args[0]).toEqual(expectedRequest);
       done();
     });
   });

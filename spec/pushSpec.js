@@ -6,7 +6,7 @@ var ClearBlade = require('../ClearBlade');
 
 describe("ClearBlade send push", function () {
   beforeEach(function () {
-    spyOn(ClearBlade, 'request').and.callFake(function(options, callback) {
+    spyOn(ClearBlade, 'request').andCallFake(function(options, callback) {
       callback(null, [], {statusCode: 202});
     });
     var initOptions =  {
@@ -23,7 +23,6 @@ describe("ClearBlade send push", function () {
 	  alert: 'hello'
 	},
 	appId = 'someIDSuppliedByApple',
-	callNum = ClearBlade.request.calls.count(),
 	expectedData = {
 	  method: 'POST',
 	  endpoint: 'api/v/1/push/fakeSystemKey',
@@ -42,6 +41,6 @@ describe("ClearBlade send push", function () {
 	  }
 	};
     ClearBlade.sendPush(users, payload, appId, function () {});
-    expect(ClearBlade.request.calls.argsFor(callNum)[0]).toEqual(expectedData);
+    expect(ClearBlade.request.mostRecentCall.args[0]).toEqual(expectedData);
   });
 });

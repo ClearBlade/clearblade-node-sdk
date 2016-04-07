@@ -217,7 +217,7 @@ ClearBlade.prototype.loginAnon = function(callback) {
       _this.execute(true, response, callback);
     } else {
       _this.setUser(null, response.user_token);
-      _this.execute(false, ClearBlade.user, callback);
+      _this.execute(false, _this.user, callback);
     }
   });
 };
@@ -361,7 +361,7 @@ ClearBlade.prototype.Collection = function(options) {
     if (callback === undefined) {
       callback = _query;
       query = {
-	FILTERS: []
+  FILTERS: []
       };
       query = 'query='+ _this.parseQuery(query);
     } else {
@@ -943,6 +943,47 @@ ClearBlade.prototype.Item = function (data, options) {
   return item;
 };
 
+ClearBlade.prototype.Code = function() {
+  var _this = this;
+  var code = {};
+
+  code.user = this.user;
+  code.URI = this.URI;
+  code.systemKey = this.systemKey;
+  code.systemSecret = this.systemSecret;
+  code.callTimeout = this._callTimeout;
+  code.URIPrefix = 'api/v/1/code/';
+
+  code.execute = function(name, params, callback){
+    var reqOptions = {
+      method: 'POST',
+      endpoint: this.URIPrefix + _this.systemKey + '/' + name,
+      body: params,
+      user: _this.user,
+      URI: _this.URI
+    };
+    var codeCallback = function(err, body) {
+      if(err) {
+        callback(true, body);
+      } else {
+        //if the server told us that the service failed - i.e., syntax error
+        if(body.success === false) {
+          callback(true, body);
+        } else {
+          callback(false, body);
+        }
+      }
+    }
+    if (typeof callback === 'function') {
+      _this.request(reqOptions, codeCallback);
+    } else {
+      throw new Error('Callback for execute is undefined or is not a function');
+    }
+  };
+
+  return code;
+}
+
 ClearBlade.prototype.User = function() {
   var _this = this;
   var user = {};
@@ -1175,7 +1216,7 @@ ClearBlade.prototype.sendPush = function (users, payload, appId, callback) {
   Object.getOwnPropertyNames(payload).forEach(function(key, element) {
     if (key === "alert" || key === "badge" || key === "sound") {
       if (!formattedObject.hasOwnProperty('aps')) {
-	formattedObject.aps = {};
+  formattedObject.aps = {};
       }
       formattedObject.aps[key] = payload[key];
     }
