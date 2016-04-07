@@ -2,7 +2,7 @@ var ClearBlade = require('../ClearBlade');
 
 describe('A ClearBlade Query object', function() {
   beforeEach(function (done) {
-    spyOn(ClearBlade, 'request').and.callFake(function(options, callback) {
+    spyOn(ClearBlade, 'request').andCallFake(function(options, callback) {
       callback(null, {user_token: 'fake'});
     });
     var doneCallback = function() { done(); };
@@ -57,7 +57,6 @@ describe('A ClearBlade Query object', function() {
   it('should create a proper request for fetching', function(done) {
     var query = ClearBlade.Query({collection: 'fake'});
     query.equalTo('pants', 'green');
-    var lastOne = ClearBlade.request.calls.count();
     query.fetch(function() { });
 
     var expectedRequest = {
@@ -66,11 +65,11 @@ describe('A ClearBlade Query object', function() {
       URI: 'https://platform.clearblade.com',
       endpoint: 'api/v/1/data/fake',
       user: {
-	email: null,
-	authToken : 'fake'
+  email: null,
+  authToken : 'fake'
       }
     };
-    expect(ClearBlade.request.calls.argsFor(lastOne)[0]).toEqual(expectedRequest);
+    expect(ClearBlade.request.mostRecentCall.args[0]).toEqual(expectedRequest);
 
     done();
   });
@@ -78,7 +77,6 @@ describe('A ClearBlade Query object', function() {
   it('should create a proper request for update', function(done) {
     var query = ClearBlade.Query({collectionID: 'fake'});
     query.equalTo('pants', 'green');
-    var lastOne = ClearBlade.request.calls.count();
     query.update({pants: 'bass'}, function() { });
     var expectedRequest = {
       method: 'PUT',
@@ -86,18 +84,17 @@ describe('A ClearBlade Query object', function() {
       URI: 'https://platform.clearblade.com',
       endpoint: 'api/v/1/data/fake',
       user: {
-	email: null,
-	authToken : 'fake'
+  email: null,
+  authToken : 'fake'
       }
     };
-    expect(ClearBlade.request.calls.argsFor(lastOne)[0]).toEqual(expectedRequest);
+    expect(ClearBlade.request.mostRecentCall.args[0]).toEqual(expectedRequest);
     done();
   });
 
   it('should create a proper request for remove', function(done) {
     var query = ClearBlade.Query({collectionID: 'fake'});
     query.equalTo('pants', 'green');
-    var lastOne = ClearBlade.request.calls.count();
     query.remove(function() { });
     var expectedRequest = {
       method: 'DELETE',
@@ -105,11 +102,11 @@ describe('A ClearBlade Query object', function() {
       URI: 'https://platform.clearblade.com',
       endpoint: 'api/v/1/data/fake',
       user: {
-	email: null,
-	authToken : 'fake'
+  email: null,
+  authToken : 'fake'
       }
     };
-    expect(ClearBlade.request.calls.argsFor(lastOne)[0]).toEqual(expectedRequest);
+    expect(ClearBlade.request.mostRecentCall.args[0]).toEqual(expectedRequest);
     done();
   });
 });
