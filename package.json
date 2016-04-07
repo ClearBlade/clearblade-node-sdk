@@ -17,7 +17,7 @@
     "winston": "^0.7.3"
   },
   "devDependencies": {
-    "jasmine-node": "^2.0.0"
+    "jasmine-node": "1.14.3"
   },
   "main": "ClearBlade.js",
   "scripts": {
