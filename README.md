@@ -12,6 +12,6 @@ npm install clearblade
 # Usage
 To use in Node.js:
 ```javascript
-var ClearBlade = require('clearblade').ClearBlade;
+var ClearBlade = require('clearblade');
 ClearBlade.init();
 ```
