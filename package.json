@@ -2,7 +2,7 @@
   "name": "clearblade",
   "description": "ClearBlade NOVI SDK for Node.js.",
   "keywords": ["iot", "clearblade", "mobile", "NOVI"],
-  "version": "1.12.0",
+  "version": "1.12.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/ClearBlade/Node-SDK.git"
@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "lodash": "^2.4.1",
-    "mqtt": "~1.0",
-    "request": "~2.40.0",
+    "mqtt": "~1.7.0",
+    "request": "~2.74.0",
     "winston": "^0.8.0"
   },
   "devDependencies": {
