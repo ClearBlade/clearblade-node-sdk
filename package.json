@@ -13,9 +13,9 @@
   },
   "dependencies": {
     "lodash": "^2.4.1",
-    "mqtt": "^0.3.9",
-    "request": "~2.36.0",
-    "winston": "^0.7.3"
+    "mqtt": "~1.0",
+    "request": "~2.40.0",
+    "winston": "^0.8.0"
   },
   "devDependencies": {
     "jasmine-node": "1.14.5"
