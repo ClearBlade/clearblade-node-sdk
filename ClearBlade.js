@@ -1190,6 +1190,28 @@ ClearBlade.prototype.Messaging = function(options, callback){
     });
   };
 
+  /**
+     * Unsubscribes from a topic
+     * @method ClearBlade.Messaging.prototype.unsubscribe
+     * @param {string} topic The topic to subscribe to. No default.
+     * @param {Object} [options] The configuration object
+     <p>
+     @options {Object}  [invocationContext] An object that contains variables and other data for the onSuccess and failure callbacks. The default is blank.
+     @options {function} [onSuccess] The callback invoked on a successful unsubscription. The default is nothing.
+     @options {function} [onFailure] The callback invoked on a failed unsubcription. The default is nothing.
+     @options {Number} [timeout] The time to wait for a response from the server acknowleging the subscription.
+     </p>
+     * @example <caption> How to publish </caption>
+     * var callback = function (data) {
+     *   console.log(data);
+     * };
+     * var cb = ClearBlade.Messaging({}, callback);
+     * cb.unsubscribe("ClearBlade/is awesome!",function(){console.log("we unsubscribe");});
+     */
+    messaging.unsubscribe = function(topic,callback){
+      this.client.unsubscribe(topic,callback);
+    };
+
   return messaging;
 };
 
