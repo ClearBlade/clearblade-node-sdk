@@ -2,7 +2,7 @@ var ClearBlade = require('../ClearBlade');
 
 describe('A ClearBlade Query object', function() {
   beforeEach(function (done) {
-    spyOn(ClearBlade, 'request').andCallFake(function(options, callback) {
+    spyOn(ClearBlade, 'request').and.callFake(function(options, callback) {
       callback(null, {user_token: 'fake'});
     });
     var doneCallback = function() { done(); };
@@ -69,7 +69,7 @@ describe('A ClearBlade Query object', function() {
   authToken : 'fake'
       }
     };
-    expect(ClearBlade.request.mostRecentCall.args[0]).toEqual(expectedRequest);
+    expect(ClearBlade.request.calls.mostRecent().args[0]).toEqual(expectedRequest);
 
     done();
   });
@@ -88,7 +88,7 @@ describe('A ClearBlade Query object', function() {
   authToken : 'fake'
       }
     };
-    expect(ClearBlade.request.mostRecentCall.args[0]).toEqual(expectedRequest);
+    expect(ClearBlade.request.calls.mostRecent().args[0]).toEqual(expectedRequest);
     done();
   });
 
@@ -106,7 +106,7 @@ describe('A ClearBlade Query object', function() {
   authToken : 'fake'
       }
     };
-    expect(ClearBlade.request.mostRecentCall.args[0]).toEqual(expectedRequest);
+    expect(ClearBlade.request.calls.mostRecent().args[0]).toEqual(expectedRequest);
     done();
   });
 });

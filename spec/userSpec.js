@@ -2,7 +2,7 @@ var ClearBlade = require('../ClearBlade');
 
 describe('A ClearBlade User request', function() {
   beforeEach(function () {
-    spyOn(ClearBlade, 'request').andCallFake(function(options, callback) {
+    spyOn(ClearBlade, 'request').and.callFake(function(options, callback) {
       callback(null, {user_token: 'fake'});
     });
     var initOptions =  {
@@ -29,13 +29,13 @@ describe('A ClearBlade User request', function() {
     userQuery.equalTo('pants', 'green');
     user.allUsers(userQuery, function() {
       // check the request, don't care about the results because this is a unit test
-      expect(ClearBlade.request.mostRecentCall.args[0]).toEqual(expectedRequest);
+      expect(ClearBlade.request.calls.mostRecent().args[0]).toEqual(expectedRequest);
       done();
     });
   });
 
   it('should make a valid request with no query using allUsers', function(done) {
-    ClearBlade.request.andCallFake(function(options, callback) {
+    ClearBlade.request.and.callFake(function(options, callback) {
       callback(null, [{user: 'fake'}]);
     });
     var user = ClearBlade.User();
@@ -50,7 +50,7 @@ describe('A ClearBlade User request', function() {
       }
     };
     user.allUsers(function() {
-      expect(ClearBlade.request.mostRecentCall.args[0]).toEqual(expectedRequest);
+      expect(ClearBlade.request.calls.mostRecent().args[0]).toEqual(expectedRequest);
       done();
     });
   });

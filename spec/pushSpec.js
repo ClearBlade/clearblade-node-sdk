@@ -6,7 +6,7 @@ var ClearBlade = require('../ClearBlade');
 
 describe("ClearBlade send push", function () {
   beforeEach(function () {
-    spyOn(ClearBlade, 'request').andCallFake(function(options, callback) {
+    spyOn(ClearBlade, 'request').and.callFake(function(options, callback) {
       callback(null, [], {statusCode: 202});
     });
     var initOptions =  {
@@ -41,6 +41,6 @@ describe("ClearBlade send push", function () {
 	  }
 	};
     ClearBlade.sendPush(users, payload, appId, function () {});
-    expect(ClearBlade.request.mostRecentCall.args[0]).toEqual(expectedData);
+    expect(ClearBlade.request.calls.mostRecent().args[0]).toEqual(expectedData);
   });
 });

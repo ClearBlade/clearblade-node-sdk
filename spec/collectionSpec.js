@@ -5,7 +5,7 @@ describe('A ClearBlade Collection object', function() {
   var collection;
 
   beforeEach(function() {
-    spyOn(ClearBlade, 'request').andCallFake(function(options, callback) {
+    spyOn(ClearBlade, 'request').and.callFake(function(options, callback) {
       callback(null, {user_token: 'fake'});
     });
     var initOptions =  {
@@ -31,7 +31,7 @@ describe('A ClearBlade Collection object', function() {
   authToken: 'fake'
       }
     };
-    expect(ClearBlade.request.mostRecentCall.args[0]).toEqual(expectedRequest);
+    expect(ClearBlade.request.calls.mostRecent().args[0]).toEqual(expectedRequest);
     done();
   });
 });

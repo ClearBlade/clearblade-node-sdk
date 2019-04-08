@@ -12,7 +12,7 @@ describe('A ClearBlade Code object', function () {
     var requestSpy;
 
     beforeEach(function () {
-        requestSpy = spyOn(ClearBlade, 'request').andCallFake(function (options, callback) {
+        requestSpy = spyOn(ClearBlade, 'request').and.callFake(function (options, callback) {
             callback(null, {user_token: fakeAuthToken});
         });
 
@@ -41,15 +41,15 @@ describe('A ClearBlade Code object', function () {
             body: {}
         };
 
-        expect(ClearBlade.request.mostRecentCall.args[0]).toEqual(expectedRequest);
+        expect(ClearBlade.request.calls.mostRecent().args[0]).toEqual(expectedRequest);
         done();
     });
 
     it('should send an error back if body.success is equal to false', function (done) {
         var syntaxError = 'SyntaxError: learn how to code';
-        spyOn(code, 'execute').andCallThrough(function() {});
+        spyOn(code, 'execute').and.callThrough(function() {});
 
-        requestSpy.andCallFake(function(options, callback) {
+        requestSpy.and.callFake(function(options, callback) {
             callback(null, {success: false, results: syntaxError});
         });
 
