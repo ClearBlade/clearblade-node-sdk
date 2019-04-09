@@ -1092,6 +1092,11 @@ ClearBlade.prototype.Messaging = function(options, callback){
   conf.password = this.systemKey;
   conf.hosts = options.hosts || [this.messagingURI];
   conf.ports = options.ports || [this.messagingPort];
+  if (options.useSSL) {
+    conf.protocol = 'tls';
+  } else {
+    conf.protocol = 'tcp';
+  }
   if (options.qos !== undefined && options.qos !== null) {
     messaging._qos = options.qos;
   } else {
@@ -1104,7 +1109,7 @@ ClearBlade.prototype.Messaging = function(options, callback){
   };
 
   var clientID = Math.floor(Math.random() * 10e12).toString();
-  var url = "tcp://"+conf.userName+":"+conf.password+"@"+conf.hosts[0]+":"+conf.ports[0]+"?clientId="+clientID;
+  var url = conf.protocol+"://"+conf.userName+":"+conf.password+"@"+conf.hosts[0]+":"+conf.ports[0]+"?clientId="+clientID;
   messaging.client = mqtt.connect(url);
 
   var onSuccess = function(data) {
