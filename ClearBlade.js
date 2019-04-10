@@ -1088,39 +1088,36 @@ ClearBlade.prototype.Messaging = function(options, callback){
   
   //roll through the config
   var conf = {};
-  conf.userName = this.user.authToken;
+  conf.username = this.user.authToken;
   conf.password = this.systemKey;
-  conf.hosts = options.hosts || [this.messagingURI];
-  conf.ports = options.ports || [this.messagingPort];
-  if (options.useSSL) {
-    conf.protocol = 'tls';
+  conf.host = options.hosts || this.messagingURI;
+  conf.port = options.ports || this.messagingPort;
+  conf.clientId = Math.floor(Math.random() * 10e12).toString();
+  if (options.useSSL !== undefined && options.useSSL === true) {
+    conf.protocol = 'mqtts';
+    conf.rejectUnauthorized = true;
+    conf.ca = options.ca;
   } else {
     conf.protocol = 'tcp';
   }
+
   if (options.qos !== undefined && options.qos !== null) {
     messaging._qos = options.qos;
   } else {
     messaging._qos = this.defaultQoS;
   }
 
-  var onMessageArrived = function(message){
-    // messageCallback from Subscribe()
-    _this.messageCallback(message.payloadString);
-  };
-
-  var clientID = Math.floor(Math.random() * 10e12).toString();
-  var url = conf.protocol+"://"+conf.userName+":"+conf.password+"@"+conf.hosts[0]+":"+conf.ports[0]+"?clientId="+clientID;
-  messaging.client = mqtt.connect(url);
+  messaging.client = mqtt.connect(conf);
 
   var onSuccess = function(data) {
-    callback(data);
+    options.onSuccess(data);
   };
 
   messaging.client.on('connect', onSuccess);
 
   var onFailure = function(err) {
     console.log("ClearBlade Messaging failed to connect");
-    callback(err);
+    options.onFailure(err);
   };
   messaging.client.on('error', onFailure);
 
