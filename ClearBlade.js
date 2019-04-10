@@ -1110,14 +1110,22 @@ ClearBlade.prototype.Messaging = function(options, callback){
   messaging.client = mqtt.connect(conf);
 
   var onSuccess = function(data) {
-    options.onSuccess(data);
+    if (options.onSuccess) {
+      options.onSuccess(data);
+    } else {
+      callback(data);
+    }
   };
 
   messaging.client.on('connect', onSuccess);
 
   var onFailure = function(err) {
-    console.log("ClearBlade Messaging failed to connect");
-    options.onFailure(err);
+    if (options.onFailure) {
+      options.onFailure(err);
+    } else {
+      console.log("ClearBlade Messaging failed to connect");
+      callback(err);
+    }
   };
   messaging.client.on('error', onFailure);
 
