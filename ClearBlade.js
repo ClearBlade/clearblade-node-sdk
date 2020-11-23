@@ -759,6 +759,11 @@ ClearBlade.prototype.Query = function (options) {
     }
   };
 
+  query.columns = function (columnsArray) {
+    query.query.SELECTCOLUMNS = columnsArray;
+    return this;
+  };
+
   
   /**
    * Reqests an item or a set of items from the query. Requires that
