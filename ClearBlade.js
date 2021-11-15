@@ -1,10 +1,7 @@
 var requestLib = require('request'),
     _ = require('lodash'),
     mqtt = require('mqtt'),
-    winston = require('winston'),
     util = require('util');
-
-winston.add(winston.transports.File, { filename: 'cblog.log' });
 
 function ClearBlade() {}
 
