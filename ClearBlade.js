@@ -627,6 +627,11 @@ ClearBlade.prototype.Query = function (options) {
     return this;
   };
 
+  query.andFilter = function (operator, field, value) {
+    _this.addFilterToQuery(this, operator, field, value);
+    return this;
+  };
+
   /**
    * Creates a greater than clause in the query object
    * @method ClearBlade.Query.greaterThan
