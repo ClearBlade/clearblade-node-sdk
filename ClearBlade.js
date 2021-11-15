@@ -308,6 +308,31 @@ ClearBlade.prototype.setUser = function(email, authToken) {
   };
 };
 
+ClearBlade.prototype.Database = function() {
+  const _this = this;
+  const database = {};
+  const systemKey = this.systemKey;
+
+  database.query = function(payload, callback) {
+
+    const reqOptions = {
+      method: 'POST',
+      endpoint: "api/v/4/database/" + systemKey + "/query",
+      body: payload,
+      URI: _this.URI,
+      user: _this.user
+    };
+
+    if (typeof callback === 'function') {
+      _this.request(reqOptions, callback);
+    } else {
+      _this.logger("No callback was defined!");
+    }
+  }
+
+  return database;
+}
+
 /**
  * Creates a new Collection that represents the server-side collection with the specified collection ID
  * @class ClearBlade.Collection
