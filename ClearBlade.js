@@ -1,7 +1,7 @@
 var requestLib = require('request'),
     _ = require('lodash'),
     mqtt = require('mqtt'),
-    util = require('util');
+    MQTTPattern = require('mqtt-pattern')
 
 function ClearBlade() {}
 
@@ -1222,12 +1222,16 @@ ClearBlade.prototype.Messaging = function(options, callback){
    * var cb = ClearBlade.Messaging({}, callback);
    * cb.Subscribe("ClearBlade/is awesome!",{});
    */
-  messaging.subscribe = function (topic, options, messageCallback) {
+  messaging.subscribe = function (pattern, options, messageCallback) {
     _.defaults(options, {qos: 0});
-    this.client.subscribe(topic, options);
+    this.client.subscribe(pattern, options);
     this.client.on('message', function(topic, message) {
       if (message !== 'null') {
-        messageCallback(message);
+        const match = MQTTPattern.exec(pattern, topic);
+        console.log('match', pattern, topic, match);
+        if (match) {
+          messageCallback(message);
+        }
       }
     });
   };
