@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.11",
-    "mqtt": "~1.7.0",
+    "mqtt": "^4.2.8",
     "mqtt-pattern": "^1.2.0",
     "request": "^2.88.0"
   },
