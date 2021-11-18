@@ -1228,7 +1228,6 @@ ClearBlade.prototype.Messaging = function(options, callback){
     this.client.on('message', function(topic, message) {
       if (message !== 'null') {
         const match = MQTTPattern.exec(pattern, topic);
-        console.log('match', pattern, topic, match);
         if (match) {
           messageCallback(message);
         }
